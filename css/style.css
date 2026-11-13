@@ -1,0 +1,381 @@
+/* ==========================================================================
+   Expense & Budget Visualizer
+   ========================================================================== */
+
+/* ---------- Theme tokens ---------- */
+:root {
+  --bg: #f5f6f7;
+  --card: #ffffff;
+  --text: #2d3436;
+  --muted: #7f8c8d;
+  --border: #dfe4e8;
+  --primary: #3498db;
+  --primary-hover: #2a85c4;
+  --danger: #e74c3c;
+  --danger-hover: #cf3f30;
+  --danger-soft: #fdecea;
+  --tag-bg: #eceff1;
+  --tag-text: #5f6b73;
+  --shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  --radius: 8px;
+}
+
+:root[data-theme="dark"] {
+  --bg: #12161a;
+  --card: #1c2228;
+  --text: #e6eaed;
+  --muted: #9aa5ad;
+  --border: #2f3841;
+  --primary: #4aa8e8;
+  --primary-hover: #3b97d6;
+  --danger: #ef5b4c;
+  --danger-hover: #d94a3b;
+  --danger-soft: #3a2220;
+  --tag-bg: #2a323a;
+  --tag-text: #b4bec6;
+  --shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* ---------- Base ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.app {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+h1,
+h2 {
+  margin: 0;
+  font-weight: 600;
+}
+
+h1 {
+  font-size: 1.4rem;
+}
+
+h2 {
+  font-size: 1.1rem;
+  margin-bottom: 16px;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+/* ---------- Header ---------- */
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 12px 0 20px;
+}
+
+.theme-toggle {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-60%);
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--card);
+  color: var(--text);
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.theme-toggle:hover {
+  border-color: var(--primary);
+}
+
+/* ---------- Cards ---------- */
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 20px;
+  margin-bottom: 16px;
+  transition: background 0.2s ease;
+}
+
+.card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* ---------- Balance ---------- */
+.balance-card {
+  text-align: center;
+  border: 2px solid transparent;
+}
+
+.balance-label {
+  margin: 0;
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.balance-amount {
+  margin: 4px 0 8px;
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: var(--primary);
+  word-break: break-all;
+}
+
+.balance-card.over-limit {
+  border-color: var(--danger);
+  background: var(--danger-soft);
+}
+
+.balance-card.over-limit .balance-amount {
+  color: var(--danger);
+}
+
+.limit-alert {
+  margin: 0 0 8px;
+  color: var(--danger);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.limit-field {
+  max-width: 260px;
+  margin: 12px auto 0;
+  text-align: left;
+}
+
+.limit-field small {
+  display: block;
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+/* ---------- Form ---------- */
+.field {
+  margin-bottom: 14px;
+}
+
+label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--card);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.95rem;
+}
+
+input:focus,
+select:focus,
+.btn:focus-visible,
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 1px;
+}
+
+.form-error {
+  margin: 0 0 12px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  background: var(--danger-soft);
+  color: var(--danger);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  border: 0;
+  border-radius: 6px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  color: #fff;
+  transition: background 0.15s ease;
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 12px;
+  background: var(--primary);
+}
+
+.btn-primary:hover {
+  background: var(--primary-hover);
+}
+
+.btn-danger {
+  flex-shrink: 0;
+  padding: 7px 14px;
+  background: var(--danger);
+  font-size: 0.8rem;
+}
+
+.btn-danger:hover {
+  background: var(--danger-hover);
+}
+
+/* ---------- Layout grid ---------- */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0 16px;
+}
+
+/* ---------- Transactions ---------- */
+.sort-select {
+  width: auto;
+  max-width: 170px;
+  padding: 6px 8px;
+  font-size: 0.8rem;
+}
+
+.transaction-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 360px;
+  overflow-y: auto;
+}
+
+.transaction-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 8px;
+  border-bottom: 1px solid var(--border);
+  border-left: 4px solid transparent;
+}
+
+.transaction-item:last-child {
+  border-bottom: 0;
+}
+
+.transaction-item.over-limit {
+  border-left-color: var(--danger);
+  background: var(--danger-soft);
+}
+
+.transaction-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  min-width: 0;
+}
+
+.transaction-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.transaction-amount {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.transaction-item.over-limit .transaction-amount {
+  color: var(--danger);
+}
+
+.transaction-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 2px;
+}
+
+.tag {
+  padding: 1px 8px;
+  border-radius: 4px;
+  background: var(--tag-bg);
+  color: var(--tag-text);
+  font-size: 0.72rem;
+}
+
+.tag-warning {
+  background: var(--danger);
+  color: #fff;
+  font-weight: 600;
+}
+
+.empty-state {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+/* ---------- Chart ---------- */
+.chart-wrap {
+  position: relative;
+  height: 300px;
+}
+
+/* ---------- Larger screens ---------- */
+@media (min-width: 768px) {
+  .app {
+    padding: 24px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+
+  h1 {
+    font-size: 1.6rem;
+  }
+}
+
+/* Small phones: keep the header tidy */
+@media (max-width: 480px) {
+  .app-header {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .theme-toggle {
+    position: static;
+    transform: none;
+  }
+
+  .balance-amount {
+    font-size: 2.2rem;
+  }
+}
